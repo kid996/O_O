@@ -12,9 +12,7 @@ public class BrowseContentsPage extends Page {
     @Override
     public void show(HashMap<String, Object> context) {
         String contents = (String)context.get("contents");
-        String[] contentList = contents.split("\t");
-        for(String content : contentList){
-            System.out.println(content);
-        }
+        String newContents = contents.replace("\t", "\n");
+        System.out.println(newContents);
     }
 }

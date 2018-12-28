@@ -7,7 +7,6 @@ import java.util.HashMap;
 public class Request {
     private String action;
     private HashMap<String, Object> data;
-    private String socket;
 
     public String getAction() {
         return action;
@@ -15,14 +14,6 @@ public class Request {
 
     public void setAction(String action) {
         this.action = action;
-    }
-
-    public String getSocket() {
-        return socket;
-    }
-
-    public void setSocket(String socket) {
-        this.socket = socket;
     }
 
     public HashMap<String, Object> getData() {
