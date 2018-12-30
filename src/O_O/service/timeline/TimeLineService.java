@@ -77,7 +77,7 @@ public class TimeLineService {
         PostComment postComment = (PostComment) params.get("postComment");
         dataReq.put("token", "\"" + params.get("token") + "\"");
         dataReq.put("comment", "\"" + postComment.getComment() + "\"");
-        dataReq.put("contentId", "\"" + postComment.getCommentId() + "\"");
+        dataReq.put("contentId", "\"" + postComment.getContentId() + "\"");
         dataReq.put("createTime", "\"" + postComment.getCreateTime() + "\"");
         request.setAction(String.valueOf(ACTION.PUSH_COMMENT));
         request.setData(dataReq);

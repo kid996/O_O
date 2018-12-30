@@ -12,7 +12,8 @@ public class BrowseCommentByIdPage extends Page {
     @Override
     public void show(HashMap<String, Object> context) {
         if(context.containsKey("comments")) {
-            System.out.println((String)context.get("comments"));
+            String comments = (String)context.get("comments");
+            System.out.println(comments.replace("\t", "\n"));
         }else {
             System.out.println("请求评论内容失败！");
         }
