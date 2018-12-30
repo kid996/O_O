@@ -6,7 +6,6 @@ import java.util.Map;
 
 public class UserContents {
 
-    //理解的还不好，不知道这样对不对
     private static HashMap<String, String> userContents = new HashMap<>();
 
     private static class InstanceHolder {
@@ -45,5 +44,12 @@ public class UserContents {
 
     public boolean isLogin(){
         return ! userContents.isEmpty();
+    }
+
+    public static void main(String[] args){
+        String s = UserContents.getInstance().get("name");
+        if(s == null){
+            System.out.println("right");
+        }
     }
 }

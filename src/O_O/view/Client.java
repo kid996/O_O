@@ -57,8 +57,12 @@ public class Client {
             HashMap<String, Object> emptyContext = new HashMap<>();
             Page mainPage = mPages.get(ACTION.MAIN_PAGE);
             mainPage.show(emptyContext);
-
-            int commend = scan.nextInt();
+            int commend=0;
+            try {
+                commend = scan.nextInt();
+            }catch (Exception e){
+                System.out.println("请输入数字！");
+            }
             //接收一个回车
             scan.nextLine();
             switch (commend) {
@@ -69,7 +73,7 @@ public class Client {
                     caseUserLogin(scan);
                     break;
                 case ACTION.USER_REGISTE:
-                    caseUserRegiste(scan);
+                    caseUserRegisted(scan);
                     break;
                 case ACTION.USER_UPDATE_NAME:
                     caseUserUpdateName(scan);
@@ -292,7 +296,7 @@ public class Client {
         page.show(context);
     }
 
-    private void caseUserRegiste(Scanner scan)
+    private void caseUserRegisted(Scanner scan)
             throws Exception {
         //1.用户输入
         if (UserContents.getInstance().isLogin()) {
@@ -327,7 +331,7 @@ public class Client {
         boolean flag = checkAction(params);
         HashMap<String, Object> context = new HashMap<>();
         if(flag) {
-            boolean isSuccess = UserService.registe(params);
+            boolean isSuccess = UserService.registed(params);
             context.put("isSuccess", isSuccess);
             context.put("name", name);
         }else{

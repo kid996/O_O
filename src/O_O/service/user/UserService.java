@@ -58,7 +58,7 @@ public class UserService {
         return false;
     }
 
-    public static boolean registe(HashMap<String, Object> params)
+    public static boolean registed(HashMap<String, Object> params)
             throws Exception {
         //1.封装请求
         Request request = new Request();
@@ -78,11 +78,11 @@ public class UserService {
             JSONObject data = JSONObject.fromObject(response.getData());
             if(data.containsKey("token")){
                 UserContents.getInstance().put("token", (String)data.get("token"));
-                UserContents.getInstance().put("pwd", (String)params.get("name"));
-                UserContents.getInstance().put("name", (String)params.get("name"));
-                UserContents.getInstance().put("phone", (String)params.get("phone"));
-                UserContents.getInstance().put("age", (String)params.get("age"));
-                UserContents.getInstance().put("sex", (String)params.get("sex"));
+                UserContents.getInstance().put("pwd", user.getPwd());
+                UserContents.getInstance().put("name", user.getName());
+                UserContents.getInstance().put("phone", user.getPhone());
+                UserContents.getInstance().put("age", user.getAge());
+                UserContents.getInstance().put("sex", user.getSex());
                 return true;
             }
         }
@@ -114,6 +114,19 @@ public class UserService {
 
     public static User userHome(HashMap<String, Object> params)
             throws Exception {
+        //0.判断缓存中是否有user信息，有就不用向后端发送请求
+        User user = new User();
+        String name = UserContents.getInstance().get("name");
+        String age = UserContents.getInstance().get("age");
+        String sex = UserContents.getInstance().get("sex");
+        String phone = UserContents.getInstance().get("phone");
+        if(name != null && age != null && sex != null && phone != null){
+            user.setPhone(phone);
+            user.setSex(sex);
+            user.setAge(age);
+            user.setName(name);
+            return user;
+        }
         //1.封装请求
         Request request = new Request();
         HashMap<String, Object> dataReq = new HashMap<>();
@@ -125,8 +138,6 @@ public class UserService {
         //3.取出参数并返回
         if(response.getCode() == Response.Status.SUCCESS) {
             JSONObject data = JSONObject.fromObject(response.getData());
-
-            User user = new User();
             if(data.containsKey("age")) {
                 user.setAge((String)data.get("age"));
             }
@@ -139,7 +150,6 @@ public class UserService {
             if(data.containsKey("sex")) {
                 user.setSex((String)data.get("sex"));
             }
-
             return user;
         }
         return null;
