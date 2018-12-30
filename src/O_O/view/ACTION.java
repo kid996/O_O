@@ -13,4 +13,5 @@ public interface ACTION {
     public static final int USER_UPDATE_PWD = 9;
     public static final int BROWSE_COMMENTS = 10;
     public static final int PUSH_COMMENT = 11;
+    public static final int TOKEN_IS_RIGHT = 12;
 }

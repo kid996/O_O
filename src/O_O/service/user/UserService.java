@@ -1,5 +1,6 @@
 package O_O.service.user;
 
+import O_O.db.dbTools;
 import O_O.model.user.User;
 import O_O.netUtil.NetUtil;
 import O_O.netUtil.Request;
@@ -49,6 +50,8 @@ public class UserService {
         if(response.getCode() == Response.Status.SUCCESS) {
             JSONObject data = JSONObject.fromObject(response.getData());
             if(data.containsKey("token")) {
+                dbTools.addToken((String)data.get("token"));
+                UserContents.getInstance().put("name", (String)data.get("name"));
                 UserContents.getInstance().put("phone", (String)params.get("phone"));
                 UserContents.getInstance().put("pwd", (String)params.get("pwd"));
                 UserContents.getInstance().put("token", (String)data.get("token"));
@@ -77,6 +80,7 @@ public class UserService {
         if(response.getCode() == Response.Status.SUCCESS) {
             JSONObject data = JSONObject.fromObject(response.getData());
             if(data.containsKey("token")){
+                dbTools.addToken((String)data.get("token"));
                 UserContents.getInstance().put("token", (String)data.get("token"));
                 UserContents.getInstance().put("pwd", user.getPwd());
                 UserContents.getInstance().put("name", user.getName());

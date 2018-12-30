@@ -1,8 +1,12 @@
 package O_O.view;
 
+import O_O.db.dbTools;
 import O_O.model.timeline.PostComment;
 import O_O.model.timeline.PostContent;
 import O_O.model.user.User;
+import O_O.netUtil.NetUtil;
+import O_O.netUtil.Request;
+import O_O.netUtil.Response;
 import O_O.service.timeline.TimeLineService;
 import O_O.service.user.UserService;
 import O_O.view.timeline.BrowseCommentByIdPage;
@@ -10,6 +14,7 @@ import O_O.view.timeline.BrowseContentsPage;
 import O_O.view.timeline.PushCommentPage;
 import O_O.view.timeline.PushContentPage;
 import O_O.view.user.*;
+import net.sf.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -52,11 +57,12 @@ public class Client {
 
     public void start() throws Exception {
         Scanner scan = new Scanner(System.in);
+        startMainPage();
         while (true) {
-            //启动主页面,这里不优雅
-            HashMap<String, Object> emptyContext = new HashMap<>();
             Page mainPage = mPages.get(ACTION.MAIN_PAGE);
-            mainPage.show(emptyContext);
+            HashMap<String, Object> context = new HashMap<>();
+            context.put("name", UserContents.getInstance().get("name"));
+            mainPage.show(context);
             int commend=0;
             try {
                 commend = scan.nextInt();
@@ -102,6 +108,28 @@ public class Client {
                 default:
                     break;
             }
+        }
+    }
+
+    private void startMainPage() throws Exception{
+        String token = dbTools.getToken();
+        Request request = new Request();
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("token", "\"" + token + "\"");
+        request.setData(data);
+        request.setAction(String.valueOf(ACTION.TOKEN_IS_RIGHT));
+        Response response = NetUtil.sendRequest(request);
+        if(response.getCode() == Response.Status.SUCCESS){
+            JSONObject dataRes = JSONObject.fromObject(response.getData());
+            String name = (String)dataRes.get("name");
+            String sex = (String)dataRes.get("sex");
+            String age = (String)dataRes.get("age");
+            String phone = (String)dataRes.get("phone");
+            UserContents.getInstance().put("name", name);
+            UserContents.getInstance().put("sex", sex);
+            UserContents.getInstance().put("age", age);
+            UserContents.getInstance().put("phone", phone);
+            UserContents.getInstance().put("token", token);
         }
     }
 
@@ -402,7 +430,6 @@ public class Client {
         boolean isSuccess = UserService.login(params);
         HashMap<String, Object> context = new HashMap<>();
         context.put("isSuccess", isSuccess);
-
 
         //3.显示
         page.show(context);
