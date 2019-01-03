@@ -138,6 +138,7 @@ public class Client {
         // 1.用户输入
         if (!UserContents.getInstance().isLogin()) {
             System.out.println("您还没登陆~");
+            return;
         }
         System.out.println("请输入要评论的帖子id：");
         String contentId = scan.nextLine();
